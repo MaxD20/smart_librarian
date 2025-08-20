@@ -1,0 +1,6 @@
+openai
+chromadb
+pydantic
+tqdm
+flake8
+pyttsx3

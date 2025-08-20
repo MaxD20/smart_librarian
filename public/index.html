@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Librarian AI RAG chatbot, tool completion, text to speech and image generation</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <style>
+    body {
+      background-color: #1e1e1e;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+    }
+    input, button {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    input {
+      width: 70%;
+      margin-right: 1rem;
+      background-color: #2c2c2c;
+      border: none;
+      color: white;
+    }
+    button {
+      background-color: #007acc;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      margin-right: 0.5rem;
+    }
+    .chat-box {
+      margin-top: 2rem;
+      white-space: pre-line;
+      background-color: #2d2d2d;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+    img.generated-image {
+      max-width: 100%;
+      margin-top: 1rem;
+      border: 1px solid #444;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1> Smart Librarian AI RAG chatbot, tool completion, text to speech and image generation</h1>
+    <p>Ask for a book recommendation or a theme:</p>
+    <input
+      v-model="query"
+      @keyup.enter="askLibrarian"
+      placeholder="e.g., A book about freedom and social control"
+    />
+    <button @click="askLibrarian">Ask</button>
+
+    <div class="chat-box" v-if="history.length">
+      <h3> Conversation:</h3>
+      <div v-for="(msg, index) in history" :key="index">
+        <strong v-if="msg.role === 'user'">User:</strong>
+        <strong v-else>Smart Librarian </strong>
+        <p v-if="msg.message">{{ msg.message }}</p>
+        <img v-if="msg.imageurl" :src="msg.imageurl" class="generated-image" alt="Generated book image" />
+        <div v-if="msg.role === 'assistant' && msg.message">
+          <button @click="speakText(msg.message)"> Listen</button>
+          <button @click="generateImage(extractTitle(msg.message))"> Generate Image</button>
+        </div>
+        <hr v-if="index < history.length - 1" />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          query: '',
+          history: []
+        };
+      },
+      methods: {
+        async askLibrarian() {
+          if (!this.query.trim()) return;
+
+          const userMessage = this.query;
+          this.history.push({ role: 'user', message: userMessage });
+          this.query = '';
+
+          try {
+            const res = await fetch('http://localhost:8000/chat', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ query: userMessage })
+            });
+
+            const data = await res.json();
+            const botReply = data?.message || " No response from assistant.";
+            this.history.push({ role: 'assistant', message: botReply });
+
+          } catch (err) {
+            console.error(' Error fetching response:', err);
+            this.history.push({ role: 'assistant', message: '❌ Error retrieving response.' });
+          }
+        },
+
+        speakText(text) {
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.lang = 'en-US';
+          utterance.rate = 0.95;
+          speechSynthesis.speak(utterance);
+        },
+
+        extractTitle(message) {
+          // Try to extract from quoted text first
+          let match = message.match(/["“']([^"”']+)["“']/);
+          if (match) return match[1];
+
+          // Try from *italic* Markdown-style
+          match = message.match(/\*([^*]+)\*/);
+          if (match) return match[1];
+
+          // Try from common pattern (e.g. recommend The Hobbit)
+          match = message.match(/recommend(?:ed)?(?: reading)? (["']?)([A-Z][^"'.!?]+)/i);
+          if (match) return match[2].trim();
+
+          return null;
+        },
+
+        async generateImage(title) {
+          if (!title) {
+            alert(" No title found to generate an image.");
+            return;
+          }
+
+          console.log("Extracted title:", title);
+
+          try {
+            const res = await fetch('http://localhost:8000/generate-image', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ title })
+            });
+
+            const data = await res.json();
+            if (data.image_url) {
+              this.history.push({
+                role: 'assistant',
+                message: '',
+                imageurl: data.image_url
+              });
+            } else {
+              alert(" Failed to retrieve image URL.");
+            }
+          } catch (err) {
+            console.error(' Image generation error:', err);
+            alert(" Failed to generate image.");
+          }
+        }
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>
