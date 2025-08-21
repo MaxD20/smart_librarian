@@ -12,18 +12,36 @@ except FileNotFoundError:
     book_summaries_dict = {}
     print(" book_summaries_dict.json not found. ")
 
-# def get_summary_by_title(title: str) -> str:
-#     summary = book_summaries_dict.get(title.strip())
-#     if summary:
-#         return summary
-#     else:
-#         return f"Sorry, no full summary found for '{title}'. Please try another title."
-    
+def _extract_full(value):
+    # Backward compatible:
+    # - if value is a dict, prefer the "full" field
+    # - if value is a string (old format), return it
+    if isinstance(value, dict):
+        full = value.get("full")
+        if isinstance(full, str) and full.strip():
+            return full
+        # fallback: if "full" missing, but "short" exists, at least return short
+        short = value.get("short")
+        if isinstance(short, str) and short.strip():
+            return short
+        return None
+    if isinstance(value, str):
+        return value
+    return None
+
 def get_summary_by_title(title: str) -> str:
+    # exact match first (task requirement)
+    v = book_summaries_dict.get(title)
+    full = _extract_full(v) if v is not None else None
+    if full:
+        return full
+
+    # case-insensitive fallback
     title_clean = title.strip().lower()
-    
-    for stored_title, summary in book_summaries_dict.items():
-        if stored_title.strip().lower() == title_clean:
-            return summary
-    
+    for stored_title, value in book_summaries_dict.items():
+        if isinstance(stored_title, str) and stored_title.strip().lower() == title_clean:
+            full = _extract_full(value)
+            if full:
+                return full
+
     return f"Sorry, no full summary found for '{title}'. Please try another title."
