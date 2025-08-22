@@ -120,3 +120,7 @@ flake8
 black .
 ```
 
+## Proof of concept
+RAG chatbot overview<br>
+<img src="https://github.com/MaxD20/smart_librarian/blob/96200ce0c65796b76e9d7e48f97f7bb5b0cc5b18/rag_chatbot_overview.png?raw=true" alt="RAG chatbot overview"  width="60%"/>
+</br>
