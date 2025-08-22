@@ -4,3 +4,9 @@ pydantic
 tqdm
 flake8
 pyttsx3
+fastapi
+uvicorn
+sqlalchemy
+requests
+flake8
+black

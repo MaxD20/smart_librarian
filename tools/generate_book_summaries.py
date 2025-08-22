@@ -1,216 +1,41 @@
-# import json
-# import os
-
-# txt_out = os.path.join("data", "book_summaries.txt")
-# dict_out = os.path.join("data", "book_summaries_dict.json")
-
-# summaries = {
-#     "1984": (
-#         "A dystopian story about a totalitarian society controlled by surveillance, propaganda, and thought police. "
-#         "Winston Smith secretly rebels in search of truth and freedom."
-#     ),
-#     "The Hobbit": (
-#         "Bilbo Baggins, a comfort-loving hobbit, is pulled into a quest to reclaim a stolen treasure guarded by a dragon. "
-#         "He discovers courage, loyalty, and adventure in a world of mythical creatures."
-#     ),
-#     "To Kill a Mockingbird": (
-#         "Set in the American South during the 1930s, this novel explores themes of racial injustice and moral growth "
-#         "through the eyes of young Scout Finch, whose father Atticus defends a Black man falsely accused of rape."
-#     ),
-#     "Pride and Prejudice": (
-#         "Elizabeth Bennet navigates issues of class, marriage, and personal misunderstandings in 19th-century England. "
-#         "Her sharp wit and strong will make her a memorable literary heroine."
-#     ),
-#     "The Great Gatsby": (
-#         "A portrayal of the American Dream and the moral decay of the 1920s. "
-#         "Jay Gatsby’s obsession with wealth and Daisy Buchanan leads to inevitable tragedy."
-#     ),
-#     "Harry Potter and the Sorcerer's Stone": (
-#         "An orphan discovers he is a wizard and begins his magical education at Hogwarts. "
-#         "Alongside new friends, he uncovers secrets about his parents' past and a dark wizard seeking immortality."
-#     ),
-#     "The Catcher in the Rye": (
-#         "Holden Caulfield recounts a few days of his life in New York City after being expelled from prep school. "
-#         "The novel explores themes of teenage alienation and existential angst."
-#     ),
-#     "Brave New World": (
-#         "In a futuristic society driven by technology and instant gratification, individuals are conditioned to conform. "
-#         "Bernard Marx seeks meaning in a world where happiness is manufactured and individuality is suppressed."
-#     ),
-#     "Moby Dick": (
-#         "Captain Ahab obsessively hunts the white whale, Moby Dick, on a doomed voyage. "
-#         "The novel explores themes of obsession, revenge, and humanity's struggle with nature."
-#     ),
-#     "The Alchemist": (
-#         "Santiago, a young shepherd, dreams of finding treasure in Egypt. "
-#         "His journey becomes a spiritual quest about fulfilling one’s destiny and listening to the heart."
-#     ),
-#     "The Lord of the Rings: The Fellowship of the Ring": (
-#         "Frodo Baggins inherits a powerful ring and sets out on a perilous journey to destroy it. "
-#         "A fellowship forms to help him navigate threats across Middle-earth."
-#     ),
-#     "Jane Eyre": (
-#         "An orphaned girl becomes a governess and falls in love with her employer, Mr. Rochester. "
-#         "Dark secrets threaten their relationship as she seeks independence and self-respect."
-#     ),
-#     "Frankenstein": (
-#         "Victor Frankenstein creates a living being from dead tissue, only to be horrified by his creation. "
-#         "The novel raises questions about scientific ethics and human responsibility."
-#     ),
-#     "Crime and Punishment": (
-#         "Raskolnikov, a poor student in St. Petersburg, believes he's above moral law and commits murder. "
-#         "The psychological drama explores guilt, redemption, and justice."
-#     ),
-#     "Wuthering Heights": (
-#         "A dark romance between Heathcliff and Catherine Earnshaw spans generations. "
-#         "Set on the moors, the story is full of passion, revenge, and haunting memories."
-#     ),
-#     "Animal Farm": (
-#         "A group of farm animals overthrow their human owner to create an equal society, "
-#         "only to watch it devolve into a dictatorship. An allegory of the Russian Revolution."
-#     ),
-#     "Dracula": (
-#         "Jonathan Harker encounters Count Dracula, a vampire seeking to move from Transylvania to England. "
-#         "A band of friends unite to battle the growing darkness."
-#     ),
-#     "The Picture of Dorian Gray": (
-#         "Dorian Gray remains youthful while his portrait ages, reflecting his moral corruption. "
-#         "A cautionary tale of vanity, indulgence, and consequence."
-#     ),
-#     "The Chronicles of Narnia: The Lion, the Witch and the Wardrobe": (
-#         "Four siblings discover a magical land ruled by a tyrannical witch. "
-#         "They join forces with the lion Aslan to bring peace to Narnia."
-#     ),
-#     "Fahrenheit 451": (
-#         "In a future where books are banned, fireman Guy Montag burns them for a living. "
-#         "After meeting a free-thinking girl, he begins to question everything."
-#     ),
-#     "The Hunger Games": (
-#         "In a dystopian future, Katniss Everdeen volunteers to take her sister's place in a deadly televised competition. "
-#         "She must rely on her instincts and cunning to survive the brutal Hunger Games."
-#     ),
-#     "The Giver": (
-#         "Jonas lives in a seemingly perfect society without pain or choice. "
-#         "When he is chosen to receive memories of the past, he discovers dark truths about his world."
-#     ),
-#     "Little Women": (
-#         "The story of the March sisters—Meg, Jo, Beth, and Amy—as they grow up during the Civil War. "
-#         "It explores themes of family, ambition, and womanhood."
-#     ),
-#     "The Secret Garden": (
-#         "Mary Lennox discovers a hidden, neglected garden on her uncle’s estate and brings it back to life. "
-#         "The story is one of healing, friendship, and renewal."
-#     ),
-#     "The Kite Runner": (
-#         "Amir, a boy from Kabul, reflects on his betrayal of a loyal friend and seeks redemption. "
-#         "A powerful tale of friendship, guilt, and the scars of war."
-#     ),
-#     "Life of Pi": (
-#         "After a shipwreck, young Pi Patel is stranded on a lifeboat with a Bengal tiger. "
-#         "His journey becomes one of survival, faith, and imagination."
-#     ),
-#     "A Tale of Two Cities": (
-#         "Set during the French Revolution, the novel contrasts the cities of London and Paris. "
-#         "Themes include sacrifice, justice, and resurrection."
-#     ),
-#     "Great Expectations": (
-#         "Pip, a poor orphan, navigates class, ambition, and love after receiving an unexpected fortune. "
-#         "A story of personal growth and moral development."
-#     ),
-#     "Emma": (
-#         "Emma Woodhouse is a wealthy young woman who fancies herself a matchmaker. "
-#         "Her misguided meddling leads to romantic complications and self-discovery."
-#     ),
-#     "Don Quixote": (
-#         "An aging man becomes a self-declared knight and sets out on absurd adventures with his loyal squire. "
-#         "A satirical exploration of idealism and reality."
-#     ),
-#     "Les Misérables": (
-#         "Jean Valjean, a former convict, seeks redemption while being pursued by Inspector Javert. "
-#         "The story spans revolution, love, and justice in 19th-century France."
-#     ),
-#     "The Count of Monte Cristo": (
-#         "Wrongfully imprisoned, Edmond Dantès escapes and plots his revenge. "
-#         "A tale of betrayal, transformation, and retribution."
-#     ),
-#     "The Odyssey": (
-#         "Homer’s epic poem follows Odysseus as he journeys home from the Trojan War, facing mythical creatures and divine wrath."
-#     ),
-#     "Beowulf": (
-#         "An ancient hero fights monsters and dragons to protect his people. "
-#         "Themes of bravery, loyalty, and legacy dominate this Old English epic."
-#     ),
-#     "Dr. Jekyll and Mr. Hyde": (
-#         "Dr. Jekyll’s experiments unleash his violent alter ego, Mr. Hyde. "
-#         "A psychological thriller about duality and the nature of evil."
-#     ),
-#     "Treasure Island": (
-#         "Young Jim Hawkins sets off on a sea voyage in search of pirate treasure. "
-#         "The classic adventure explores greed, courage, and betrayal."
-#     ),
-#     "The Adventures of Huckleberry Finn": (
-#         "Huck Finn escapes an abusive father and travels down the Mississippi River with a runaway slave. "
-#         "A critique of racism and society in pre-Civil War America."
-#     ),
-#     "The Time Machine": (
-#         "A scientist travels far into the future and discovers the fate of humanity. "
-#         "H.G. Wells explores class division, progress, and decay."
-#     ),
-#     "Around the World in 80 Days": (
-#         "Phileas Fogg wagers he can circumnavigate the globe in 80 days. "
-#         "A fast-paced adventure full of unexpected challenges and encounters."
-#     ),
-#     "Anne of Green Gables": (
-#         "Anne Shirley, a spirited orphan, is adopted by siblings on Prince Edward Island. "
-#         "Her imagination and curiosity bring joy and chaos to their quiet lives."
-#     )
-# }
-
-# with open(txt_out, "w", encoding="utf-8") as f_txt:
-#     for title, summary in summaries.items():
-#         f_txt.write(f"## Title: {title}::{summary.strip()}\n")
-
-# with open(dict_out, "w", encoding="utf-8") as f_json:
-#     json.dump(summaries, f_json, indent=2, ensure_ascii=False)
-
-# import os, json
-
-
-# out_dir = "/data"
-# os.makedirs(out_dir, exist_ok=True)
-# txt_out = os.path.join(out_dir, "book_summaries.txt")
-# dict_out = os.path.join(out_dir, "book_summaries_dict.json")
-
-# txt_out = os.path.join("data", "book_summaries.txt")
-# dict_out = os.path.join("data", "book_summaries_dict.json")
-
 from pathlib import Path
-import os, json
+import json
 
-project_root = Path(__file__).resolve().parents[1]   # .../smart_librarian
+project_root = Path(__file__).resolve().parents[1]  # .../smart_librarian
 out_dir = project_root / "data"
 out_dir.mkdir(parents=True, exist_ok=True)
 
-txt_out  = out_dir / "book_summaries.txt"
+txt_out = out_dir / "book_summaries.txt"
 dict_out = out_dir / "book_summaries_dict.json"
 
 
 book_summaries_dict = {
     "1984": {
-        "short": "A dystopian story about a totalitarian society controlled by surveillance, propaganda, and thought police. Winston Smith secretly rebels in search of truth and freedom.",
+        "short": "A dystopian story about a totalitarian society controlled by surveillance, propaganda, and thought police. "
+        "Winston Smith secretly rebels in search of truth and freedom.",
         "full": (
             "George Orwell depicts a brutal one-party state that rewrites history and polices thought itself. "
-            "Winston Smith, a clerk at the Ministry of Truth, begins a doomed love affair with Julia and keeps a secret diary as acts of rebellion. "
+            "Winston Smith, a clerk at the Ministry of Truth, begins a doomed love affair "
+            "with Julia and keeps a secret diary as acts of rebellion. "
             "Captured by the Thought Police, he is tortured into betraying Julia and accepting the Party's reality. "
             "The novel dissects propaganda, language control, and the fragility of individual freedom.\n"
             "Big Brother’s omnipresent gaze ensures conformity, while Newspeak limits the range of thought. "
             "Winston’s struggle is both personal and political, reflecting the dangers of unchecked authority. "
             "The bleak ending underscores the loss of individuality and hope in a repressive regime."
         ),
-        "themes": ["dystopia", "totalitarianism", "surveillance", "propaganda", "freedom", "rebellion"]
+        "themes": [
+            "dystopia",
+            "totalitarianism",
+            "surveillance",
+            "propaganda",
+            "freedom",
+            "rebellion",
+        ],
     },
     "The Hobbit": {
-        "short": "Bilbo Baggins, a comfort-loving hobbit, is pulled into a quest to reclaim a stolen treasure guarded by a dragon. He discovers courage, loyalty, and adventure in a world of mythical creatures.",
+        "short": "Bilbo Baggins, a comfort-loving hobbit, is pulled "
+        "into a quest to reclaim a stolen treasure guarded by a dragon."
+        " He discovers courage, loyalty, and adventure in a world of mythical creatures.",
         "full": (
             "Bilbo Baggins is recruited by Gandalf and a band of dwarves to reclaim Erebor from the dragon Smaug. "
             "On the journey he survives trolls, goblins, spiders, and wood-elves, and wins a mysterious ring from Gollum. "
@@ -220,10 +45,12 @@ book_summaries_dict = {
             "The novel introduces Middle-earth and sets the stage for Tolkien’s later works. "
             "Themes of home, bravery, and the unexpected value of ordinary people are woven throughout."
         ),
-        "themes": ["adventure", "friendship", "courage", "quest", "fantasy"]
+        "themes": ["adventure", "friendship", "courage", "quest", "fantasy"],
     },
     "To Kill a Mockingbird": {
-        "short": "Set in the American South during the 1930s, this novel explores themes of racial injustice and moral growth through the eyes of young Scout Finch, whose father Atticus defends a Black man falsely accused of rape.",
+        "short": "Set in the American South during the 1930s, this novel explores themes of racial injustice and moral growth "
+        "through the eyes of young Scout Finch, whose father Atticus "
+        "defends a Black man falsely accused of rape.",
         "full": (
             "Scout Finch grows up in Maycomb, Alabama, witnessing her father Atticus defend Tom Robinson, a Black man wrongly accused of raping a white woman. "
             "Through her childhood adventures and observations, Scout learns about prejudice, empathy, and the complexities of human nature. "
@@ -232,7 +59,7 @@ book_summaries_dict = {
             "The mysterious neighbor Boo Radley becomes a symbol of misunderstood kindness. "
             "Harper Lee’s novel remains a powerful critique of social injustice and the loss of innocence."
         ),
-        "themes": ["racism", "justice", "childhood", "morality", "coming of age"]
+        "themes": ["racism", "justice", "childhood", "morality", "coming of age"],
     },
     "Pride and Prejudice": {
         "short": "Elizabeth Bennet navigates issues of class, marriage, and personal misunderstandings in 19th-century England. Her sharp wit and strong will make her a memorable literary heroine.",
@@ -244,7 +71,7 @@ book_summaries_dict = {
             "The novel explores the limitations placed on women and the importance of marrying for love. "
             "Elizabeth’s independence and intelligence make her a timeless protagonist."
         ),
-        "themes": ["love", "class", "marriage", "prejudice", "family", "society"]
+        "themes": ["love", "class", "marriage", "prejudice", "family", "society"],
     },
     "The Great Gatsby": {
         "short": "A portrayal of the American Dream and the moral decay of the 1920s. Jay Gatsby’s obsession with wealth and Daisy Buchanan leads to inevitable tragedy.",
@@ -256,7 +83,14 @@ book_summaries_dict = {
             "The green light at the end of Daisy’s dock symbolizes unattainable dreams. "
             "The novel critiques materialism and the illusion of the American Dream."
         ),
-        "themes": ["American Dream", "wealth", "love", "illusion", "tragedy", "society"]
+        "themes": [
+            "American Dream",
+            "wealth",
+            "love",
+            "illusion",
+            "tragedy",
+            "society",
+        ],
     },
     "Harry Potter and the Sorcerer's Stone": {
         "short": "An orphan discovers he is a wizard and begins his magical education at Hogwarts. Alongside new friends, he uncovers secrets about his parents' past and a dark wizard seeking immortality.",
@@ -268,7 +102,7 @@ book_summaries_dict = {
             "Themes of friendship, courage, and self-discovery are central to the story. "
             "J.K. Rowling’s world-building introduces readers to a rich magical universe."
         ),
-        "themes": ["magic", "friendship", "courage", "identity", "good vs evil"]
+        "themes": ["magic", "friendship", "courage", "identity", "good vs evil"],
     },
     "The Catcher in the Rye": {
         "short": "Holden Caulfield recounts a few days of his life in New York City after being expelled from prep school. The novel explores themes of teenage alienation and existential angst.",
@@ -280,7 +114,13 @@ book_summaries_dict = {
             "The novel explores mental health, grief, and the challenges of growing up. "
             "J.D. Salinger’s work remains a touchstone for adolescent alienation."
         ),
-        "themes": ["alienation", "adolescence", "identity", "innocence", "mental health"]
+        "themes": [
+            "alienation",
+            "adolescence",
+            "identity",
+            "innocence",
+            "mental health",
+        ],
     },
     "Brave New World": {
         "short": "In a futuristic society driven by technology and instant gratification, individuals are conditioned to conform. Bernard Marx seeks meaning in a world where happiness is manufactured and individuality is suppressed.",
@@ -292,7 +132,7 @@ book_summaries_dict = {
             "Soma, the happiness drug, symbolizes escapism and denial. "
             "Huxley’s vision remains relevant in debates about technology and freedom."
         ),
-        "themes": ["dystopia", "technology", "conformity", "freedom", "identity"]
+        "themes": ["dystopia", "technology", "conformity", "freedom", "identity"],
     },
     "Moby Dick": {
         "short": "Captain Ahab obsessively hunts the white whale, Moby Dick, on a doomed voyage. The novel explores themes of obsession, revenge, and humanity's struggle with nature.",
@@ -304,7 +144,7 @@ book_summaries_dict = {
             "The whale becomes a symbol of nature’s power and mystery. "
             "The novel’s complexity and symbolism have inspired generations of readers."
         ),
-        "themes": ["obsession", "revenge", "nature", "fate", "madness"]
+        "themes": ["obsession", "revenge", "nature", "fate", "madness"],
     },
     "The Alchemist": {
         "short": "Santiago, a young shepherd, dreams of finding treasure in Egypt. His journey becomes a spiritual quest about fulfilling one’s destiny and listening to the heart.",
@@ -316,7 +156,7 @@ book_summaries_dict = {
             "The story blends adventure with philosophical reflection. "
             "Santiago’s transformation inspires readers to seek their own Personal Legend."
         ),
-        "themes": ["destiny", "spirituality", "journey", "self-discovery", "dreams"]
+        "themes": ["destiny", "spirituality", "journey", "self-discovery", "dreams"],
     },
     "The Lord of the Rings: The Fellowship of the Ring": {
         "short": "Frodo Baggins inherits a powerful ring and sets out on a perilous journey to destroy it. A fellowship forms to help him navigate threats across Middle-earth.",
@@ -328,7 +168,7 @@ book_summaries_dict = {
             "The landscapes and cultures of Middle-earth are richly detailed. "
             "The story sets the stage for the larger struggle between good and evil."
         ),
-        "themes": ["friendship", "good vs evil", "power", "sacrifice", "adventure"]
+        "themes": ["friendship", "good vs evil", "power", "sacrifice", "adventure"],
     },
     "Jane Eyre": {
         "short": "An orphaned girl becomes a governess and falls in love with her employer, Mr. Rochester. Dark secrets threaten their relationship as she seeks independence and self-respect.",
@@ -340,7 +180,7 @@ book_summaries_dict = {
             "Jane’s resilience and self-worth challenge Victorian gender roles. "
             "The story is celebrated for its emotional depth and strong heroine."
         ),
-        "themes": ["independence", "love", "morality", "identity", "gothic"]
+        "themes": ["independence", "love", "morality", "identity", "gothic"],
     },
     "Frankenstein": {
         "short": "Victor Frankenstein creates a living being from dead tissue, only to be horrified by his creation. The novel raises questions about scientific ethics and human responsibility.",
@@ -352,7 +192,7 @@ book_summaries_dict = {
             "Themes of isolation, empathy, and the limits of science are central. "
             "The story is a foundational work of both science fiction and gothic literature."
         ),
-        "themes": ["science", "creation", "isolation", "responsibility", "ambition"]
+        "themes": ["science", "creation", "isolation", "responsibility", "ambition"],
     },
     "Crime and Punishment": {
         "short": "Raskolnikov, a poor student in St. Petersburg, believes he's above moral law and commits murder. The psychological drama explores guilt, redemption, and justice.",
@@ -364,7 +204,7 @@ book_summaries_dict = {
             "The novel examines poverty, alienation, and the search for meaning. "
             "Raskolnikov’s journey is both a crime story and a philosophical exploration."
         ),
-        "themes": ["guilt", "redemption", "justice", "morality", "psychology"]
+        "themes": ["guilt", "redemption", "justice", "morality", "psychology"],
     },
     "Wuthering Heights": {
         "short": "A dark romance between Heathcliff and Catherine Earnshaw spans generations. Set on the moors, the story is full of passion, revenge, and haunting memories.",
@@ -376,7 +216,7 @@ book_summaries_dict = {
             "Themes of obsession, social class, and the supernatural pervade the story. "
             "The moorland setting mirrors the characters’ wild passions."
         ),
-        "themes": ["love", "revenge", "obsession", "class", "gothic"]
+        "themes": ["love", "revenge", "obsession", "class", "gothic"],
     },
     "Animal Farm": {
         "short": "A group of farm animals overthrow their human owner to create an equal society, only to watch it devolve into a dictatorship. An allegory of the Russian Revolution.",
@@ -388,7 +228,7 @@ book_summaries_dict = {
             "The phrase 'All animals are equal, but some animals are more equal than others' encapsulates the novel’s irony. "
             "The story remains a powerful warning about the abuse of power."
         ),
-        "themes": ["allegory", "power", "corruption", "revolution", "equality"]
+        "themes": ["allegory", "power", "corruption", "revolution", "equality"],
     },
     "Dracula": {
         "short": "Jonathan Harker encounters Count Dracula, a vampire seeking to move from Transylvania to England. A band of friends unite to battle the growing darkness.",
@@ -400,7 +240,7 @@ book_summaries_dict = {
             "Themes of sexuality, superstition, and modernity clash throughout the story. "
             "Dracula’s legacy endures as a defining work of Gothic fiction."
         ),
-        "themes": ["vampires", "good vs evil", "supernatural", "fear", "gothic"]
+        "themes": ["vampires", "good vs evil", "supernatural", "fear", "gothic"],
     },
     "The Picture of Dorian Gray": {
         "short": "Dorian Gray remains youthful while his portrait ages, reflecting his moral corruption. A cautionary tale of vanity, indulgence, and consequence.",
@@ -412,7 +252,7 @@ book_summaries_dict = {
             "Dorian’s downfall is both inevitable and tragic. "
             "The story remains a meditation on beauty and consequence."
         ),
-        "themes": ["vanity", "morality", "corruption", "aesthetics", "duality"]
+        "themes": ["vanity", "morality", "corruption", "aesthetics", "duality"],
     },
     "The Chronicles of Narnia: The Lion, the Witch and the Wardrobe": {
         "short": "Four siblings discover a magical land ruled by a tyrannical witch. They join forces with the lion Aslan to bring peace to Narnia.",
@@ -424,7 +264,7 @@ book_summaries_dict = {
             "Themes of sacrifice, forgiveness, and faith are woven throughout. "
             "The novel is beloved for its imaginative world and moral lessons."
         ),
-        "themes": ["fantasy", "good vs evil", "sacrifice", "redemption", "faith"]
+        "themes": ["fantasy", "good vs evil", "sacrifice", "redemption", "faith"],
     },
     "Fahrenheit 451": {
         "short": "In a future where books are banned, fireman Guy Montag burns them for a living. After meeting a free-thinking girl, he begins to question everything.",
@@ -436,7 +276,7 @@ book_summaries_dict = {
             "The mechanical hound and parlor walls symbolize technological control. "
             "The story champions the enduring power of literature and free thought."
         ),
-        "themes": ["censorship", "freedom", "conformity", "technology", "rebellion"]
+        "themes": ["censorship", "freedom", "conformity", "technology", "rebellion"],
     },
     "The Hunger Games": {
         "short": "In a dystopian future, Katniss Everdeen volunteers to take her sister's place in a deadly televised competition. She must rely on her instincts and cunning to survive the brutal Hunger Games.",
@@ -448,7 +288,7 @@ book_summaries_dict = {
             "The love triangle with Peeta and Gale adds emotional complexity. "
             "The story critiques reality TV and authoritarian control."
         ),
-        "themes": ["dystopia", "survival", "rebellion", "sacrifice", "oppression"]
+        "themes": ["dystopia", "survival", "rebellion", "sacrifice", "oppression"],
     },
     "The Giver": {
         "short": "Jonas lives in a seemingly perfect society without pain or choice. When he is chosen to receive memories of the past, he discovers dark truths about his world.",
@@ -460,7 +300,7 @@ book_summaries_dict = {
             "The ambiguous ending invites reflection on hope and resistance. "
             "The story is a classic of young adult dystopian fiction."
         ),
-        "themes": ["dystopia", "memory", "freedom", "conformity", "emotion"]
+        "themes": ["dystopia", "memory", "freedom", "conformity", "emotion"],
     },
     "Little Women": {
         "short": "The story of the March sisters—Meg, Jo, Beth, and Amy—as they grow up during the Civil War. It explores themes of family, ambition, and womanhood.",
@@ -472,7 +312,7 @@ book_summaries_dict = {
             "The story reflects changing roles for women in the 19th century. "
             "Its warmth and realism have made it a beloved classic."
         ),
-        "themes": ["family", "womanhood", "ambition", "sisterhood", "growth"]
+        "themes": ["family", "womanhood", "ambition", "sisterhood", "growth"],
     },
     "The Secret Garden": {
         "short": "Mary Lennox discovers a hidden, neglected garden on her uncle’s estate and brings it back to life. The story is one of healing, friendship, and renewal.",
@@ -484,7 +324,7 @@ book_summaries_dict = {
             "Themes of loss, hope, and personal growth are central. "
             "The garden becomes a symbol of renewal and possibility."
         ),
-        "themes": ["healing", "friendship", "nature", "renewal", "growth"]
+        "themes": ["healing", "friendship", "nature", "renewal", "growth"],
     },
     "The Kite Runner": {
         "short": "Amir, a boy from Kabul, reflects on his betrayal of a loyal friend and seeks redemption. A powerful tale of friendship, guilt, and the scars of war.",
@@ -496,7 +336,7 @@ book_summaries_dict = {
             "The backdrop of Afghan history adds depth and urgency. "
             "The relationship between fathers and sons is a recurring theme."
         ),
-        "themes": ["friendship", "guilt", "redemption", "family", "war"]
+        "themes": ["friendship", "guilt", "redemption", "family", "war"],
     },
     "Life of Pi": {
         "short": "After a shipwreck, young Pi Patel is stranded on a lifeboat with a Bengal tiger. His journey becomes one of survival, faith, and imagination.",
@@ -508,7 +348,7 @@ book_summaries_dict = {
             "The ambiguous ending invites readers to question truth and belief. "
             "The relationship between Pi and the tiger is both literal and symbolic."
         ),
-        "themes": ["survival", "faith", "imagination", "storytelling", "nature"]
+        "themes": ["survival", "faith", "imagination", "storytelling", "nature"],
     },
     "A Tale of Two Cities": {
         "short": "Set during the French Revolution, the novel contrasts the cities of London and Paris. Themes include sacrifice, justice, and resurrection.",
@@ -520,7 +360,7 @@ book_summaries_dict = {
             "The violence of the revolution is contrasted with acts of compassion. "
             "The story’s scope and emotion have made it a classic of historical fiction."
         ),
-        "themes": ["revolution", "sacrifice", "justice", "redemption", "history"]
+        "themes": ["revolution", "sacrifice", "justice", "redemption", "history"],
     },
     "Great Expectations": {
         "short": "Pip, a poor orphan, navigates class, ambition, and love after receiving an unexpected fortune. A story of personal growth and moral development.",
@@ -532,7 +372,7 @@ book_summaries_dict = {
             "The eccentric characters and vivid settings are hallmarks of his style. "
             "Pip’s growth from naïveté to maturity is central to the story."
         ),
-        "themes": ["ambition", "class", "love", "growth", "forgiveness"]
+        "themes": ["ambition", "class", "love", "growth", "forgiveness"],
     },
     "Emma": {
         "short": "Emma Woodhouse is a wealthy young woman who fancies herself a matchmaker. Her misguided meddling leads to romantic complications and self-discovery.",
@@ -544,7 +384,7 @@ book_summaries_dict = {
             "The novel explores class, gender, and the pitfalls of pride. "
             "Emma’s journey to self-awareness is both humorous and touching."
         ),
-        "themes": ["romance", "society", "pride", "self-discovery", "class"]
+        "themes": ["romance", "society", "pride", "self-discovery", "class"],
     },
     "Don Quixote": {
         "short": "An aging man becomes a self-declared knight and sets out on absurd adventures with his loyal squire. A satirical exploration of idealism and reality.",
@@ -556,7 +396,7 @@ book_summaries_dict = {
             "Themes of illusion, madness, and the power of imagination are central. "
             "The story’s influence on Western literature is profound."
         ),
-        "themes": ["satire", "idealism", "reality", "imagination", "madness"]
+        "themes": ["satire", "idealism", "reality", "imagination", "madness"],
     },
     "Les Misérables": {
         "short": "Jean Valjean, a former convict, seeks redemption while being pursued by Inspector Javert. The story spans revolution, love, and justice in 19th-century France.",
@@ -568,7 +408,7 @@ book_summaries_dict = {
             "The novel’s scope encompasses poverty, politics, and love. "
             "Its emotional power and social critique remain relevant."
         ),
-        "themes": ["redemption", "justice", "love", "revolution", "mercy"]
+        "themes": ["redemption", "justice", "love", "revolution", "mercy"],
     },
     "The Count of Monte Cristo": {
         "short": "Wrongfully imprisoned, Edmond Dantès escapes and plots his revenge. A tale of betrayal, transformation, and retribution.",
@@ -580,7 +420,7 @@ book_summaries_dict = {
             "Themes of fate, identity, and transformation are central. "
             "The story’s intrigue and adventure have captivated readers for generations."
         ),
-        "themes": ["revenge", "justice", "betrayal", "transformation", "forgiveness"]
+        "themes": ["revenge", "justice", "betrayal", "transformation", "forgiveness"],
     },
     "The Odyssey": {
         "short": "Homer’s epic poem follows Odysseus as he journeys home from the Trojan War, facing mythical creatures and divine wrath.",
@@ -592,7 +432,7 @@ book_summaries_dict = {
             "Homer’s storytelling blends adventure, myth, and moral lessons. "
             "Odysseus’s journey is a foundational narrative of Western literature."
         ),
-        "themes": ["adventure", "heroism", "perseverance", "myth", "loyalty"]
+        "themes": ["adventure", "heroism", "perseverance", "myth", "loyalty"],
     },
     "Beowulf": {
         "short": "An ancient hero fights monsters and dragons to protect his people. Themes of bravery, loyalty, and legacy dominate this Old English epic.",
@@ -604,7 +444,7 @@ book_summaries_dict = {
             "Its language and structure reflect the oral tradition. "
             "Beowulf’s story endures as a symbol of the heroic ideal."
         ),
-        "themes": ["heroism", "bravery", "loyalty", "legacy", "sacrifice"]
+        "themes": ["heroism", "bravery", "loyalty", "legacy", "sacrifice"],
     },
     "Dr. Jekyll and Mr. Hyde": {
         "short": "Dr. Jekyll’s experiments unleash his violent alter ego, Mr. Hyde. A psychological thriller about duality and the nature of evil.",
@@ -616,7 +456,7 @@ book_summaries_dict = {
             "Themes of repression, morality, and identity are central. "
             "The story’s suspense and symbolism have made it a classic."
         ),
-        "themes": ["duality", "evil", "identity", "repression", "psychology"]
+        "themes": ["duality", "evil", "identity", "repression", "psychology"],
     },
     "Treasure Island": {
         "short": "Young Jim Hawkins sets off on a sea voyage in search of pirate treasure. The classic adventure explores greed, courage, and betrayal.",
@@ -628,7 +468,7 @@ book_summaries_dict = {
             "Themes of greed, trust, and coming of age are central. "
             "The story’s pirates and settings have become cultural icons."
         ),
-        "themes": ["adventure", "greed", "courage", "betrayal", "coming of age"]
+        "themes": ["adventure", "greed", "courage", "betrayal", "coming of age"],
     },
     "The Adventures of Huckleberry Finn": {
         "short": "Huck Finn escapes an abusive father and travels down the Mississippi River with a runaway slave. A critique of racism and society in pre-Civil War America.",
@@ -640,7 +480,7 @@ book_summaries_dict = {
             "Themes of freedom, friendship, and conscience are central. "
             "The story’s language and perspective are uniquely American."
         ),
-        "themes": ["freedom", "racism", "friendship", "society", "conscience"]
+        "themes": ["freedom", "racism", "friendship", "society", "conscience"],
     },
     "The Time Machine": {
         "short": "A scientist travels far into the future and discovers the fate of humanity. H.G. Wells explores class division, progress, and decay.",
@@ -652,7 +492,7 @@ book_summaries_dict = {
             "Themes of time, technology, and social critique are central. "
             "The story’s imagination and insight remain influential."
         ),
-        "themes": ["time travel", "class", "progress", "decay", "science fiction"]
+        "themes": ["time travel", "class", "progress", "decay", "science fiction"],
     },
     "Around the World in 80 Days": {
         "short": "Phileas Fogg wagers he can circumnavigate the globe in 80 days. A fast-paced adventure full of unexpected challenges and encounters.",
@@ -664,7 +504,7 @@ book_summaries_dict = {
             "The story’s pace and variety of settings keep readers engaged. "
             "Fogg’s transformation is as important as the outcome of his wager."
         ),
-        "themes": ["adventure", "travel", "perseverance", "ingenuity", "challenge"]
+        "themes": ["adventure", "travel", "perseverance", "ingenuity", "challenge"],
     },
     "Anne of Green Gables": {
         "short": "Anne Shirley, a spirited orphan, is adopted by siblings on Prince Edward Island. Her imagination and curiosity bring joy and chaos to their quiet lives.",
@@ -676,39 +516,19 @@ book_summaries_dict = {
             "Themes of belonging, forgiveness, and self-acceptance are central. "
             "Anne’s journey from outsider to beloved community member is inspiring."
         ),
-        "themes": ["imagination", "belonging", "growth", "friendship", "nature"]
-    }
+        "themes": ["imagination", "belonging", "growth", "friendship", "nature"],
+    },
 }
 
 with open(txt_out, "w", encoding="utf-8") as f_txt:
     for title, data in book_summaries_dict.items():
         short = data["short"].strip()
         themes_str = "; ".join(data.get("themes", []))
-        # keeps your "## Title: ...::..." marker; themes appended after a separator
         f_txt.write(f"## Title: {title}::{short}||themes: {themes_str}\n")
 
-# ---------- write JSON (short + full + themes) ----------
+
 with open(dict_out, "w", encoding="utf-8") as f_json:
     json.dump(book_summaries_dict, f_json, indent=2, ensure_ascii=False)
 
 print("TXT saved at:", txt_out.resolve())
 print("JSON saved at:", dict_out.resolve())
-
-
-# with open(txt_out, "w", encoding="utf-8") as f_txt:
-#     for title, data in book_summaries_dict.items():
-#         short = data["short"].strip()
-#         themes_str = "; ".join(data.get("themes", []))
-#         f_txt.write(f"## Title: {title}::{short}||themes: {themes_str}\n")
-
-# with open(dict_out, "w", encoding="utf-8") as f_json:
-#     json.dump(book_summaries_dict, f_json, indent=2, ensure_ascii=False)
-
-# print("Wrote:", txt_out, "and", dict_out)
-
-# with open(txt_out, "w", encoding="utf-8") as f_txt:
-#     for title, summary in summaries.items():
-#         f_txt.write(f"## Title: {title}::{summary.strip()}\n")
-
-# with open(dict_out, "w", encoding="utf-8") as f_json:
-#     json.dump(summaries, f_json, indent=2, ensure_ascii=False)

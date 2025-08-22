@@ -1,0 +1,3 @@
+[flake8]
+exclude = .git,__pycache__,venv,env,.venv,node_modules,*.pyc,*.egg,*.egg-info, generate_book_summaries.py
+max-line-length = 130

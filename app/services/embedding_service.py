@@ -1,104 +1,3 @@
-# import os
-# import chromadb
-# from tqdm import tqdm
-# from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
-
-# chroma_path = "./chromadb_store"
-# collection_name = "book_summaries"
-
-
-# def parse_summary_line(line: str):
- 
-#     clean_line = line.replace("## Title: ", "").strip()
-
-#     if "::" not in clean_line:
-#         raise ValueError("Line missing '::' separator")
-
-#     title, rest = clean_line.split("::", 1)
-#     title = title.strip()
-
-#     if "||themes:" in rest:
-#         short_summary, themes_str = rest.split("||themes:", 1)
-#         short_summary = short_summary.strip()
-#         themes = [t.strip() for t in themes_str.split(";") if t.strip()]
-#     else:
-#         short_summary = rest.strip()
-#         themes = []
-
-#     return title, short_summary, themes                   
-
-
-# def load_book_summaries(file_path: str):
-
-#     summaries = []
-#     with open(file_path, "r", encoding="utf-8") as f:
-#         for line in f:
-#             if line.startswith("## Title:"):
-#                 try:
-#                     title, short_summary, themes = parse_summary_line(line)
-#                     summaries.append((title, short_summary, themes))
-#                 except Exception as e:
-#                     print("Skipping malformed line:", line.strip(), "| Error:", e)
-#     return summaries
-
-
-# def embed_summaries_to_chroma(summaries, openai_api_key: str):
-#     # Embed the summaries with OpenAI's text embedding 3 small and store in a local ChromaDB collection for semnatic search
-#     client = chromadb.PersistentClient(path="./chromadb_store")
-
-#     embedding_function = OpenAIEmbeddingFunction(
-#         api_key=openai_api_key,
-#         model_name="text-embedding-3-small"
-#     )
-
-#     collection = client.get_or_create_collection(
-#         name=collection_name,
-#         embedding_function=embedding_function
-#     )
-
-#     ids, documents, metadatas = [], [], []
-#     for idx, (title, summary) in enumerate(tqdm(summaries, desc="Embedding summaries")):
-#         if themes:
-#             document_text = f"{short_summary}\nThemes: {', '.join(themes)}"
-#         else:
-#             document_text = short_summary
-
-#         ids.append(f"book_{idx}")
-#         documents.append(document_text)
-#         metadatas.append({"title": title, "themes": themes})
-
-#     collection.add(documents=documents, metadatas=metadatas, ids=ids)
-#     print(" Book summaries embedded and stored in ChromaDB.")
-
-
-# def semantic_search(query: str, openai_api_key: str, top_k: int = 1):
-#     # Perform semantic search in ChromaDB for a user query
-#     client = chromadb.PersistentClient(path=chroma_path)
-
-#     embedding_function = OpenAIEmbeddingFunction(
-#         api_key=openai_api_key,
-#         model_name="text-embedding-3-small"
-#     )
-
-#     collection = client.get_collection(
-#         name=collection_name,
-#         embedding_function=embedding_function
-#     )            
-
-#     results = collection.query(
-#         query_texts=[query],
-#         n_results=top_k
-#     )
-
-#     metadata = results["metadatas"][0][0]
-#     document = results["documents"][0][0]
-
-#     title = metadata.get("title", "")
-#     themes = metadata.get("themes", [])
-
-#     return title, document, themes
-
-import os
 import chromadb
 from tqdm import tqdm
 from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
@@ -146,18 +45,18 @@ def embed_summaries_to_chroma(summaries, openai_api_key: str, reset: bool = Fals
             pass
 
     embedding_function = OpenAIEmbeddingFunction(
-        api_key=openai_api_key,
-        model_name="text-embedding-3-small"
+        api_key=openai_api_key, model_name="text-embedding-3-small"
     )
 
     collection = client.get_or_create_collection(
-        name=COLLECTION_NAME,
-        embedding_function=embedding_function
+        name=COLLECTION_NAME, embedding_function=embedding_function
     )
 
     ids, documents, metadatas = [], [], []
 
-    for idx, (title, short_summary, themes) in enumerate(tqdm(summaries, desc="Embedding summaries")):
+    for idx, (title, short_summary, themes) in enumerate(
+        tqdm(summaries, desc="Embedding summaries")
+    ):
         themes_str = ", ".join(themes) if themes else ""
         if themes_str:
             document_text = f"{short_summary}\nThemes: {themes_str}"
@@ -179,13 +78,11 @@ def semantic_search(query: str, openai_api_key: str, top_k: int = 1):
     client = chromadb.PersistentClient(path=CHROMA_PATH)
 
     embedding_function = OpenAIEmbeddingFunction(
-        api_key=openai_api_key,
-        model_name="text-embedding-3-small"
+        api_key=openai_api_key, model_name="text-embedding-3-small"
     )
 
     collection = client.get_collection(
-        name=COLLECTION_NAME,
-        embedding_function=embedding_function
+        name=COLLECTION_NAME, embedding_function=embedding_function
     )
 
     results = collection.query(query_texts=[query], n_results=top_k)
