@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Smart Librarian AI RAG chatbot, tool completion, text to speech and image generation</title>
+  <title>Smart Librarian RAG chatbot & tool</title>
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
   <style>
     body {
@@ -48,7 +48,7 @@
 </head>
 <body>
   <div id="app">
-    <h1> Smart Librarian AI RAG chatbot, tool completion, text to speech and image generation</h1>
+    <h1>Smart Librarian RAG chatbot & tool</h1>
     <p>Ask for a book recommendation or a theme:</p>
     <input
       v-model="query"
@@ -58,15 +58,15 @@
     <button @click="askLibrarian">Ask</button>
 
     <div class="chat-box" v-if="history.length">
-      <h3> Conversation:</h3>
+      <h3>Conversation:</h3>
       <div v-for="(msg, index) in history" :key="index">
         <strong v-if="msg.role === 'user'">User:</strong>
-        <strong v-else>Smart Librarian </strong>
+        <strong v-else>Smart Librarian</strong>
         <p v-if="msg.message">{{ msg.message }}</p>
         <img v-if="msg.imageurl" :src="msg.imageurl" class="generated-image" alt="Generated book image" />
         <div v-if="msg.role === 'assistant' && msg.message">
-          <button @click="speakText(msg.message)"> Listen</button>
-          <button @click="generateImage(extractTitle(msg.message))"> Generate Image</button>
+          <button @click="speakText(msg.message)">Listen</button>
+          <button @click="generateImage(extractTitle(msg.message))">Generate Image</button>
         </div>
         <hr v-if="index < history.length - 1" />
       </div>
@@ -80,7 +80,8 @@
       data() {
         return {
           query: '',
-          history: []
+          history: [],
+          lastRequestId: null
         };
       },
       methods: {
@@ -99,12 +100,13 @@
             });
 
             const data = await res.json();
-            const botReply = data?.message || " No response from assistant.";
+            const botReply = data?.message || "No response from assistant.";
+            this.lastRequestId = data?.request_id || null;
             this.history.push({ role: 'assistant', message: botReply });
 
           } catch (err) {
-            console.error(' Error fetching response:', err);
-            this.history.push({ role: 'assistant', message: '❌ Error retrieving response.' });
+            console.error('Error fetching response:', err);
+            this.history.push({ role: 'assistant', message: 'Error retrieving response.' });
           }
         },
 
@@ -113,18 +115,24 @@
           utterance.lang = 'en-US';
           utterance.rate = 0.95;
           speechSynthesis.speak(utterance);
+
+          fetch("http://localhost:8000/listen", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              request_id: this.lastRequestId,
+              text
+            })
+          }).catch((e) => console.warn('listen log failed', e));
         },
 
         extractTitle(message) {
-          // Try to extract from quoted text first
           let match = message.match(/["“']([^"”']+)["“']/);
           if (match) return match[1];
 
-          // Try from *italic* Markdown-style
           match = message.match(/\*([^*]+)\*/);
           if (match) return match[1];
 
-          // Try from common pattern (e.g. recommend The Hobbit)
           match = message.match(/recommend(?:ed)?(?: reading)? (["']?)([A-Z][^"'.!?]+)/i);
           if (match) return match[2].trim();
 
@@ -133,7 +141,7 @@
 
         async generateImage(title) {
           if (!title) {
-            alert(" No title found to generate an image.");
+            alert("No title found to generate an image.");
             return;
           }
 
@@ -143,7 +151,7 @@
             const res = await fetch('http://localhost:8000/generate-image', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ title })
+              body: JSON.stringify({ title, request_id: this.lastRequestId })
             });
 
             const data = await res.json();
@@ -154,11 +162,11 @@
                 imageurl: data.image_url
               });
             } else {
-              alert(" Failed to retrieve image URL.");
+              alert("Failed to retrieve image URL.");
             }
           } catch (err) {
-            console.error(' Image generation error:', err);
-            alert(" Failed to generate image.");
+            console.error('Image generation error:', err);
+            alert("Failed to generate image.");
           }
         }
       }
