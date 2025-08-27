@@ -129,5 +129,5 @@ RAG chatbot overview<br>
 - The chat history is presented in data/logs/chat_history.json
 
 Chat history<br>
-<img src="https://github.com/MaxD20/smart_librarian/blob/7afe70ed8b154293821194be8bd0dd03a5170381/chat_history.pngraw=true" alt="Chat history" width="60%"/>
+<img src="https://github.com/MaxD20/smart_librarian/blob/7afe70ed8b154293821194be8bd0dd03a5170381/chat_history.png?raw=true" alt="Chat history" width="60%"/>
 </br>
