@@ -124,3 +124,10 @@ black .
 RAG chatbot overview<br>
 <img src="https://github.com/MaxD20/smart_librarian/blob/96200ce0c65796b76e9d7e48f97f7bb5b0cc5b18/rag_chatbot_overview.png?raw=true" alt="RAG chatbot overview"  width="60%"/>
 </br>
+
+## Chat history
+- The chat history is presented in data/logs/chat_history.json
+
+Chat history<br>
+<img src="https://github.com/MaxD20/smart_librarian/blob/7afe70ed8b154293821194be8bd0dd03a5170381/chat_history.pngraw=true" alt="Chat history" width="60%"/>
+</br>
