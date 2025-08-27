@@ -1,5 +1,7 @@
 # Smart Librarian, AI RAG chatbot with tool
 
+- Maxim Dragos, Data&AI
+
 Smart Librarian is an AI-powered chatbot that recommends books based on user interests.  
 It combines **OpenAI GPT** with **RAG (Retrieval-Augmented Generation)** using **ChromaDB** for semantic search,  
 and provides **short + full summaries** through a tool function. 
