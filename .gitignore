@@ -44,7 +44,7 @@ Thumbs.db
 *.env
 
 
-chromadb_store/
+#chromadb_store/
 
 data/chat_history.txt
 data/*.sqlite*
